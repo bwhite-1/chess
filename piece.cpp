@@ -18,9 +18,7 @@ char Piece::get_symbol() const
 
 void Piece::increment_move_count()
 {
-    std::cout << move_count << "->" << move_count+1 << std::endl;
     move_count += 1;
-
     return;
 }
 

@@ -1,5 +1,6 @@
 #include "board.hpp"
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 Board::Board()
@@ -282,5 +283,51 @@ void Board::make_move(std::string input, Piece::Colour colo)
     array[source_row][source_col] = nullptr;
 
     array[target_row][target_col]->increment_move_count();
+
+    // add move to the move history
+    add_to_history(input, colo);
     return;
+}
+
+void Board::add_to_history(const std::string move, const Piece::Colour colo)
+{
+    if (colo == Piece::white){
+        move_history.push_back(move + "  |       ");
+    } else {
+        for (int i{10}; i<=14; i++)
+        move_history.back()[i] = move[i-10];
+    }
+    return;
+}
+
+void Board::save_history(const std::string filename){
+    std::ofstream ofs;
+    ofs.open(filename);
+    for (int i{}; i<move_history.size(); i++){
+        ofs << move_history[i] << std::endl;
+    }
+    return;
+}
+
+void Board::load_game_from_file(const std::string filename){
+    std::ifstream ifs;
+    ifs.open(filename);
+    std::string line{}, white_move{}, black_move{};
+    std::cout << "===============" << std::endl;
+    std::cout << "Previous moves " << std::endl;
+    std::cout << "===============" << std::endl;
+    while(std::getline(ifs, line) && line[0] != ' '){
+        white_move = line.substr(0,5);
+        black_move = line.substr(10,5);
+
+        std::cout << white_move << "  |  " << black_move << std::endl;
+
+        this->make_move(white_move, Piece::white);
+        this->set_whose_turn(Piece::black);
+        if (black_move[0] != ' '){
+            this->make_move(black_move, Piece::black);
+            this->set_whose_turn(Piece::white);
+        }
+    }
+    std::cout << "===============" << std::endl;
 }

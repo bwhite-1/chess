@@ -17,11 +17,16 @@ public:
 
     Piece::Colour get_whose_turn() const {return whose_turn;};
     void set_whose_turn(Piece::Colour turn){whose_turn = turn;};
+
+    void add_to_history(const std::string move, const Piece::Colour colo);
+    void save_history(const std::string filename);
+    void load_game_from_file(const std::string filename);
 private:
     Piece *array[8][8];
     std::vector<Piece*> white_captured;
     std::vector<Piece*> black_captured;
     Piece::Colour whose_turn{Piece::white};
+    std::vector<std::string> move_history;
 };
 
 #endif
