@@ -120,19 +120,22 @@ void Board::print_board() const
             case 0:
                 std::cout << "     " << colour_names[whose_turn] << " to move";
                 break;
-            case 2:
-                std::cout << "     Captured white pieces:";
+            case 1:
+                std::cout << "     Type [menu] to open the menu";
                 break;
             case 3:
+                std::cout << "     Captured white pieces:";
+                break;
+            case 4:
                 std::cout << "          ";
                 for (int ii{}; ii<white_captured.size(); ii++){
                     std::cout << white_captured[ii]->get_symbol() << " ";
                 }
                 break;
-            case 5:
+            case 6:
                 std::cout << "     Captured black pieces:";
                 break;
-            case 6:
+            case 7:
                 std::cout << "          ";
                 for (int jj{}; jj<black_captured.size(); jj++){
                     std::cout << black_captured[jj]->get_symbol() << " ";
@@ -313,14 +316,14 @@ void Board::load_game_from_file(const std::string filename){
     std::ifstream ifs;
     ifs.open(filename);
     std::string line{}, white_move{}, black_move{};
-    std::cout << "===============" << std::endl;
-    std::cout << "Previous moves " << std::endl;
-    std::cout << "===============" << std::endl;
+    std::cout << "  ========================" << std::endl;
+    std::cout << "     Moves from file " << std::endl;
+    std::cout << "  ========================" << std::endl;
     while(std::getline(ifs, line) && line[0] != ' '){
         white_move = line.substr(0,5);
         black_move = line.substr(10,5);
 
-        std::cout << white_move << "  |  " << black_move << std::endl;
+        std::cout << "      " << white_move << "  |  " << black_move << std::endl;
 
         this->make_move(white_move, Piece::white);
         this->set_whose_turn(Piece::black);
@@ -329,5 +332,5 @@ void Board::load_game_from_file(const std::string filename){
             this->set_whose_turn(Piece::white);
         }
     }
-    std::cout << "===============" << std::endl;
+    std::cout << "  ========================" << std::endl;
 }
