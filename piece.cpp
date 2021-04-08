@@ -22,6 +22,23 @@ void Piece::increment_move_count()
     return;
 }
 
+void Piece::decrement_move_count()
+{
+    //is decrement a word
+    move_count -= 1;
+    return;
+}
+
+Piece::Colour Piece::get_opposite_colour() const
+{
+    if (colour == Piece::black){
+        return Piece::white;
+    } else {
+        return Piece::black;
+    }
+}
+
+
 // ROOK IMPLEMENTATION
 std::vector<std::vector<int>> Rook::get_possible_moves(Piece* array[8][8], int row, int col) 
 {
@@ -185,10 +202,10 @@ std::vector<std::vector<int>> Knight::get_possible_moves(Piece* array[8][8], int
     for (int i{-2}; i<=2; i++){
         for (int j{-2}; j<=2; j++){
             if (abs(i)+abs(j) == 3){
-                if (row+i >= 0 && row+i < 8 && col+i >=0 && col+i < 8){
-                    if (array[row+i][col+i] == nullptr){
+                if (row+i >= 0 && row+i < 8 && col+j >=0 && col+j < 8){
+                    if (array[row+i][col+j] == nullptr){
                         move_list.push_back(std::vector<int>{row+i, col+j});
-                    } else if (array[row+i][col+i]->get_colour() != this->get_colour()){
+                    } else if (array[row+i][col+j]->get_colour() != this->get_colour()){
                         move_list.push_back(std::vector<int>{row+i, col+j});
                     }
                 } 
@@ -292,17 +309,15 @@ std::vector<std::vector<int>> King::get_possible_moves(Piece* array[8][8], int r
     for (int i{-1}; i<=1; i++){
         for (int j{-1}; j<=1; j++){
             if (abs(i)+abs(j) != 0){
-                if (row+i >= 0 && row+i < 8 && col+i >=0 && col+i < 8){
-                    if (array[row+i][col+i] == nullptr){
+                if (row+i >= 0 && row+i < 8 && col+j >=0 && col+j < 8){
+                    if (array[row+i][col+j] == nullptr){
                         move_list.push_back(std::vector<int>{row+i, col+j});
-                    } else if (array[row+i][col+i]->get_colour() != this->get_colour()){
+                    } else if (array[row+i][col+j]->get_colour() != this->get_colour()){
                         move_list.push_back(std::vector<int>{row+i, col+j});
                     }
                 } 
             }
         }
     }
-    return move_list;
-    
     return move_list;
 }

@@ -6,7 +6,7 @@ class Menu
 {
 public:
     void print_intro() const;
-    int main_menu(Board board);
+    int main_menu(Board &board);
 private:
 
 };

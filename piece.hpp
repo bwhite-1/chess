@@ -14,9 +14,11 @@ public:
     char get_symbol() const;
     Piece_type get_piece_type() const {return piece_type;};
     Colour get_colour() const {return colour;};
+    Colour get_opposite_colour() const;
     int get_move_count() const {return move_count;};
     void set_piece_type(Piece_type pt){piece_type = pt;};
     void increment_move_count();
+    void decrement_move_count();
 private:
     Colour colour{};
     Piece_type piece_type;
