@@ -11,10 +11,6 @@ int main()
     menu.print_intro();
     Board game_board;
     game_board.initialise_default_board();
-    //std::cout << "1 ply: " << game_board.enumerate_moves(1, Piece::black) << std::endl;
-    //std::cout << "2 ply: " << game_board.enumerate_moves(2, Piece::black) << std::endl;
-    //std::cout << "3 ply: " << game_board.enumerate_moves(3, Piece::black) << std::endl;
-    //std::cout << "4 ply: " << game_board.enumerate_moves(4, Piece::white) << std::endl;
 
     std::cout << "Press [y] to load a game from a file, or any other key \n" 
               << "to start from the default board " << std::endl;
@@ -32,6 +28,7 @@ int main()
 
     // while game is still going
     while(true){
+        
         // check if player is in checkmate
         if (game_board.is_checkmate(game_board.get_whose_turn()) == true){
             std::cout << "Game Over!!" << std::endl;
@@ -42,7 +39,7 @@ int main()
             }
             std::cout << "Use the menu to quit" << std::endl;
         }
-
+        
         // get user input
         std::string input{};
         std::getline(std::cin, input);

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <memory>
 
 Board::Board()
 {
@@ -14,81 +15,82 @@ Board::Board()
 
 void Board::initialise_default_board()
 {
-    Rook* w_rook = new Rook(Piece::white);
-    Rook* w_rook2= new Rook(Piece::white);
-    Rook* b_rook = new Rook(Piece::black);
-    Rook* b_rook2= new Rook(Piece::black);
-
-    Knight* w_knight = new Knight(Piece::white);
-    Knight* w_knight2= new Knight(Piece::white);
-    Knight* b_knight = new Knight(Piece::black);
-    Knight* b_knight2= new Knight(Piece::black);
-
-    Bishop* w_bishop = new Bishop(Piece::white);
-    Bishop* w_bishop2= new Bishop(Piece::white);
-    Bishop* b_bishop = new Bishop(Piece::black);
-    Bishop* b_bishop2= new Bishop(Piece::black);
-
-    King* w_king = new King(Piece::white);
-    King* b_king = new King(Piece::black);
-
-    Queen* w_queen = new Queen(Piece::white);
-    Queen* b_queen = new Queen(Piece::black);
-
-    Pawn* w_pawn = new Pawn(Piece::white);
-    Pawn* w_pawn2= new Pawn(Piece::white);
-    Pawn* w_pawn3= new Pawn(Piece::white);
-    Pawn* w_pawn4= new Pawn(Piece::white);
-    Pawn* w_pawn5= new Pawn(Piece::white);
-    Pawn* w_pawn6= new Pawn(Piece::white);
-    Pawn* w_pawn7= new Pawn(Piece::white);
-    Pawn* w_pawn8= new Pawn(Piece::white);
+    std::unique_ptr<Piece> w_rook  {new Rook(Piece::white)};
+    std::unique_ptr<Piece> w_rook2 {new Rook(Piece::white)};
+    std::unique_ptr<Piece> b_rook  {new Rook(Piece::black)};
+    std::unique_ptr<Piece> b_rook2 {new Rook(Piece::black)};
     
-    Pawn* b_pawn = new Pawn(Piece::black);
-    Pawn* b_pawn2= new Pawn(Piece::black);
-    Pawn* b_pawn3= new Pawn(Piece::black);
-    Pawn* b_pawn4= new Pawn(Piece::black);
-    Pawn* b_pawn5= new Pawn(Piece::black);
-    Pawn* b_pawn6= new Pawn(Piece::black);
-    Pawn* b_pawn7= new Pawn(Piece::black);
-    Pawn* b_pawn8= new Pawn(Piece::black);
+    std::unique_ptr<Piece> w_knight  {new Knight(Piece::white)};
+    std::unique_ptr<Piece> w_knight2 {new Knight(Piece::white)};
+    std::unique_ptr<Piece> b_knight  {new Knight(Piece::black)};
+    std::unique_ptr<Piece> b_knight2 {new Knight(Piece::black)};
 
-    array[0][0] = b_rook;
-    array[0][1] = b_knight;
-    array[0][2] = b_bishop;
-    array[0][3] = b_queen;
-    array[0][4] = b_king;
-    array[0][5] = b_bishop2;
-    array[0][6] = b_knight2;
-    array[0][7] = b_rook2;
+    std::unique_ptr<Piece> w_bishop  {new Bishop(Piece::white)};
+    std::unique_ptr<Piece> w_bishop2 {new Bishop(Piece::white)};
+    std::unique_ptr<Piece> b_bishop  {new Bishop(Piece::black)};
+    std::unique_ptr<Piece> b_bishop2 {new Bishop(Piece::black)};
 
-    array[1][0] = b_pawn;
-    array[1][1] = b_pawn2;
-    array[1][2] = b_pawn3;
-    array[1][3] = b_pawn4;
-    array[1][4] = b_pawn5;
-    array[1][5] = b_pawn6;
-    array[1][6] = b_pawn7;
-    array[1][7] = b_pawn8;
+    std::unique_ptr<Piece> w_king {new King(Piece::white)};
+    std::unique_ptr<Piece> b_king {new King(Piece::black)};
 
-    array[6][0] = w_pawn;
-    array[6][1] = w_pawn2;
-    array[6][2] = w_pawn3;
-    array[6][3] = w_pawn4;
-    array[6][4] = w_pawn5;
-    array[6][5] = w_pawn6;
-    array[6][6] = w_pawn7;
-    array[6][7] = w_pawn8;
+    std::unique_ptr<Piece> w_queen {new Queen(Piece::white)};
+    std::unique_ptr<Piece> b_queen {new Queen(Piece::black)};
 
-    array[7][0] = w_rook;
-    array[7][1] = w_knight;
-    array[7][2] = w_bishop;
-    array[7][3] = w_queen;
-    array[7][4] = w_king;
-    array[7][5] = w_bishop2;
-    array[7][6] = w_knight2;
-    array[7][7] = w_rook2;
+    std::unique_ptr<Piece> w_pawn  {new Pawn(Piece::white)};
+    std::unique_ptr<Piece> w_pawn2 {new Pawn(Piece::white)};
+    std::unique_ptr<Piece> w_pawn3 {new Pawn(Piece::white)};
+    std::unique_ptr<Piece> w_pawn4 {new Pawn(Piece::white)};
+    std::unique_ptr<Piece> w_pawn5 {new Pawn(Piece::white)};
+    std::unique_ptr<Piece> w_pawn6 {new Pawn(Piece::white)};
+    std::unique_ptr<Piece> w_pawn7 {new Pawn(Piece::white)};
+    std::unique_ptr<Piece> w_pawn8 {new Pawn(Piece::white)};
+    
+    std::unique_ptr<Piece> b_pawn  {new Pawn(Piece::black)};
+    std::unique_ptr<Piece> b_pawn2 {new Pawn(Piece::black)};
+    std::unique_ptr<Piece> b_pawn3 {new Pawn(Piece::black)};
+    std::unique_ptr<Piece> b_pawn4 {new Pawn(Piece::black)};
+    std::unique_ptr<Piece> b_pawn5 {new Pawn(Piece::black)};
+    std::unique_ptr<Piece> b_pawn6 {new Pawn(Piece::black)};
+    std::unique_ptr<Piece> b_pawn7 {new Pawn(Piece::black)};
+    std::unique_ptr<Piece> b_pawn8 {new Pawn(Piece::black)};
 
+    
+    array[0][0] = std::move(b_rook);
+    array[0][1] = std::move(b_knight);
+    array[0][2] = std::move(b_bishop);
+    array[0][3] = std::move(b_queen);
+    array[0][4] = std::move(b_king);
+    array[0][5] = std::move(b_bishop2);
+    array[0][6] = std::move(b_knight2);
+    array[0][7] = std::move(b_rook2);
+
+    array[1][0] = std::move(b_pawn);
+    array[1][1] = std::move(b_pawn2);
+    array[1][2] = std::move(b_pawn3);
+    array[1][3] = std::move(b_pawn4);
+    array[1][4] = std::move(b_pawn5);
+    array[1][5] = std::move(b_pawn6);
+    array[1][6] = std::move(b_pawn7);
+    array[1][7] = std::move(b_pawn8);
+
+    array[6][0] = std::move(w_pawn);
+    array[6][1] = std::move(w_pawn2);
+    array[6][2] = std::move(w_pawn3);
+    array[6][3] = std::move(w_pawn4);
+    array[6][4] = std::move(w_pawn5);
+    array[6][5] = std::move(w_pawn6);
+    array[6][6] = std::move(w_pawn7);
+    array[6][7] = std::move(w_pawn8);
+
+    array[7][0] = std::move(w_rook);
+    array[7][1] = std::move(w_knight);
+    array[7][2] = std::move(w_bishop);
+    array[7][3] = std::move(w_queen);
+    array[7][4] = std::move(w_king);
+    array[7][5] = std::move(w_bishop2);
+    array[7][6] = std::move(w_knight2);
+    array[7][7] = std::move(w_rook2);
+    
     return;
 }
 
@@ -353,14 +355,14 @@ void Board::make_move(std::string input, Piece::Colour colo)
 
     // move piece and add taken piece to graveyard if necessary
     if        (array[target_row][target_col] != nullptr && colo == Piece::white){
-        black_captured.push_back(array[target_row][target_col]);
+        black_captured.push_back(std::move(array[target_row][target_col]));
         was_capture = 1;
 
     } else if (array[target_row][target_col] != nullptr && colo == Piece::black){
-        white_captured.push_back(array[target_row][target_col]);
+        white_captured.push_back(std::move(array[target_row][target_col]));
         was_capture = 1;
     }
-    array[target_row][target_col] = array[source_row][source_col];
+    array[target_row][target_col] = std::move(array[source_row][source_col]);
     array[source_row][source_col] = nullptr;
 
     array[target_row][target_col]->increment_move_count();
@@ -403,16 +405,16 @@ void Board::undo_move()
     }
     // if it was a capture, must move the piece out the graveyard
     if (was_capture == 1){
-        array[source_row][source_col] = array[target_row][target_col];
+        array[source_row][source_col] = std::move(array[target_row][target_col]);
         if (colo == Piece::white){
-            array[target_row][target_col] = black_captured.back();
+            array[target_row][target_col] = std::move(black_captured.back());
             black_captured.pop_back();
         } else if (colo == Piece::black){
-            array[target_row][target_col] = white_captured.back();
+            array[target_row][target_col] = std::move(white_captured.back());
             white_captured.pop_back();
         }
     } else {
-        array[source_row][source_col] = array[target_row][target_col];
+        array[source_row][source_col] = std::move(array[target_row][target_col]);
         array[target_row][target_col] = nullptr;
     }
     array[source_row][source_col]->decrement_move_count();

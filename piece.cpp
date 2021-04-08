@@ -1,6 +1,7 @@
 #include "piece.hpp"
 #include <iostream>
 #include <cmath>
+#include <memory>
 char Piece::get_symbol() const
 {
     // return the correct symbol based on whether the piece
@@ -40,7 +41,7 @@ Piece::Colour Piece::get_opposite_colour() const
 
 
 // ROOK IMPLEMENTATION
-std::vector<std::vector<int>> Rook::get_possible_moves(Piece* array[8][8], int row, int col) 
+std::vector<std::vector<int>> Rook::get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) 
 {
     std::vector<std::vector<int>> move_list{};
     // check east
@@ -91,7 +92,7 @@ std::vector<std::vector<int>> Rook::get_possible_moves(Piece* array[8][8], int r
 }
 
 // BISHOP IMPLEMENTATION
-std::vector<std::vector<int>> Bishop::get_possible_moves(Piece* array[8][8], int row, int col) 
+std::vector<std::vector<int>> Bishop::get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) 
 {
     std::vector<std::vector<int>> move_list{};
     int i = 1;
@@ -142,7 +143,7 @@ std::vector<std::vector<int>> Bishop::get_possible_moves(Piece* array[8][8], int
 }
 
 // PAWN IMPLEMENTATION
-std::vector<std::vector<int>> Pawn::get_possible_moves(Piece* array[8][8], int row, int col) 
+std::vector<std::vector<int>> Pawn::get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) 
 {
     std::vector<std::vector<int>> move_list{};
 
@@ -195,7 +196,7 @@ std::vector<std::vector<int>> Pawn::get_possible_moves(Piece* array[8][8], int r
 }
 
 // KNIGHT IMPLEMENTATION
-std::vector<std::vector<int>> Knight::get_possible_moves(Piece* array[8][8], int row, int col) 
+std::vector<std::vector<int>> Knight::get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) 
 {
     std::vector<std::vector<int>> move_list{};
 
@@ -216,7 +217,7 @@ std::vector<std::vector<int>> Knight::get_possible_moves(Piece* array[8][8], int
 }
 
 // QUEEN IMPLEMENTATION
-std::vector<std::vector<int>> Queen::get_possible_moves(Piece* array[8][8], int row, int col) 
+std::vector<std::vector<int>> Queen::get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) 
 {
     std::vector<std::vector<int>> move_list{};
     // check east
@@ -303,7 +304,7 @@ std::vector<std::vector<int>> Queen::get_possible_moves(Piece* array[8][8], int 
 }
 
 // KING IMPLEMENTATION
-std::vector<std::vector<int>> King::get_possible_moves(Piece* array[8][8], int row, int col) 
+std::vector<std::vector<int>> King::get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) 
 {
     std::vector<std::vector<int>> move_list{};
     for (int i{-1}; i<=1; i++){

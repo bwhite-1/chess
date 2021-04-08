@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "piece.hpp"
 class Board
 {
@@ -31,9 +32,9 @@ public:
     bool is_check(Piece::Colour colo);
     bool is_checkmate(Piece::Colour colo);
 private:
-    Piece* array[8][8];
-    std::vector<Piece*> white_captured;
-    std::vector<Piece*> black_captured;
+    std::unique_ptr<Piece> array[8][8];
+    std::vector<std::unique_ptr<Piece>> white_captured;
+    std::vector<std::unique_ptr<Piece>> black_captured;
     Piece::Colour whose_turn{Piece::white};
     std::vector<std::string> move_history;
 };
