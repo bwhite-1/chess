@@ -3,8 +3,15 @@
 #include <fstream>
 #include <vector>
 #include <memory>
+#include <limits>
+#include <map>
 
 Board::Board()
+{
+    set_elements_to_nullptr();
+}
+
+void Board::set_elements_to_nullptr()
 {
     for (int row{}; row<8; row++){
         for (int col{}; col<8; col++){
@@ -96,6 +103,7 @@ void Board::initialise_default_board()
 
 void Board::print_board() const
 {
+    // print out the main board
     std::cout << "   a  b  c  d  e  f  g  h "<< std::endl;
     std::cout << "  ========================"<< std::endl;
     for (int row{0}; row<8; row++){
@@ -117,6 +125,7 @@ void Board::print_board() const
                 std::cout << board_l << " " << board_r;
             }
         }
+        // print additional information to the right
         std::string colour_names[2]{"White", "Black"};
         switch (row){
             case 0:
@@ -150,134 +159,62 @@ void Board::print_board() const
 }
 
 int Board::rank_to_row(const char r) const 
-// convert user input rank to array row index
+// convert user input rank to array row index using a map
 {
-    int row{-1};
-    switch (r) {
-        case '8':
-            row = 0;
-            break;
-        case '7':
-            row = 1;
-            break;
-        case '6':
-            row = 2;
-            break;
-        case '5':
-            row = 3;
-            break;
-        case '4':
-            row = 4;
-            break;
-        case '3':
-            row = 5;
-            break;
-        case '2':
-            row = 6;
-            break;
-        case '1':
-            row = 7;
-            break;
-    }
-    return row;
+    std::map<char, int> rank_to_row_map { {'8', 0},
+                                          {'7', 1},
+                                          {'6', 2},
+                                          {'5', 3},
+                                          {'4', 4},
+                                          {'3', 5},
+                                          {'2', 6},
+                                          {'1', 7}};
+    
+    return rank_to_row_map[r];
 }
 
 
 int Board::file_to_col(const char f) const 
-// conver user input file to array column index
+// conver user input file to array column index using a map
 {
-    int col{-1};
-    switch (f) {
-        case 'a':
-            col = 0;
-            break;
-        case 'b':
-            col = 1;
-            break;
-        case 'c':
-            col = 2;
-            break;
-        case 'd':
-            col = 3;
-            break;
-        case 'e':
-            col = 4;
-            break;
-        case 'f':
-            col = 5;
-            break;
-        case 'g':
-            col = 6;
-            break;
-        case 'h':
-            col = 7;
-            break;
-    }
-    return col;
+    std::map<char, int> file_to_col_map { {'a', 0},
+                                          {'b', 1},
+                                          {'c', 2},
+                                          {'d', 3},
+                                          {'e', 4},
+                                          {'f', 5},
+                                          {'g', 6},
+                                          {'h', 7}};
+    
+    return file_to_col_map[f];
 }
 
 char Board::row_to_rank(const int r) const
 {
-    int rank{' '};
-    switch (r) {
-        case 0:
-            rank = '8';
-            break;
-        case 1:
-            rank = '7';
-            break;
-        case 2:
-            rank = '6';
-            break;
-        case 3:
-            rank = '5';
-            break;
-        case 4:
-            rank = '4';
-            break;
-        case 5:
-            rank = '3';
-            break;
-        case 6:
-            rank = '2';
-            break;
-        case 7:
-            rank = '1';
-            break;
-    }
-    return rank;
+    std::map<int, char> row_to_rank_map { {0, '8'},
+                                          {1, '7'},
+                                          {2, '6'},
+                                          {3, '5'},
+                                          {4, '4'},
+                                          {5, '3'},
+                                          {6, '2'},
+                                          {7, '1'}};
+    
+    return row_to_rank_map[r];
 }
 
 char Board::col_to_file(const int c) const
 {
-    int file{' '};
-    switch (c) {
-        case 0:
-            file = 'a';
-            break;
-        case 1:
-            file = 'b';
-            break;
-        case 2:
-            file = 'c';
-            break;
-        case 3:
-            file = 'd';
-            break;
-        case 4:
-            file = 'e';
-            break;
-        case 5:
-            file = 'f';
-            break;
-        case 6:
-            file = 'g';
-            break;
-        case 7:
-            file = 'h';
-            break;
-    }
-    return file;
+    std::map<int, char> col_to_file_map { {0, 'a'},
+                                          {1, 'b'},
+                                          {2, 'c'},
+                                          {3, 'd'},
+                                          {4, 'e'},
+                                          {5, 'f'},
+                                          {6, 'g'},
+                                          {7, 'h'}};
+    
+    return col_to_file_map[c];
 }
 
 void Board::flip_turn()
@@ -290,11 +227,12 @@ void Board::flip_turn()
     return;
 }
 
-bool Board::is_move_valid(std::string input, Piece::Colour colo)
+bool Board::is_move_valid(std::string input)
 {
+    Piece::Colour colo {this->get_whose_turn()};
     // check input is valid format
     // should be [file][rank] [file][rank]
-    // e.g. c3 e5 to move from c3 to e5
+    // e.g. "c3 e5" to move from c3 to e5
     bool input_error{false};
     if (input.size() != 5) input_error = true;
     else if (this->file_to_col(input[0]) == -1) input_error = true;
@@ -307,7 +245,7 @@ bool Board::is_move_valid(std::string input, Piece::Colour colo)
         std::cout << "Could not interpret move" << std::endl;
         return false;
     }
-    
+    // convert user input to 0 indexed [row][column] format
     int source_row{this->rank_to_row(input[1])};
     int source_col{this->file_to_col(input[0])};
     int target_row{this->rank_to_row(input[4])};
@@ -330,9 +268,9 @@ bool Board::is_move_valid(std::string input, Piece::Colour colo)
     
     bool valid_move_found{false};
     // compare it to the inputted move
+    // if the inputted move matches a move on the move_list, it is a valid move
     for (int i{}; i<move_list.size(); i++){
         if ((( move_list[i])[0] == target_row) && ((move_list[i])[1] == target_col)){
-            //std::cout << "Valid move" << std::endl;
             valid_move_found = true;
             return true;
         }
@@ -344,9 +282,10 @@ bool Board::is_move_valid(std::string input, Piece::Colour colo)
     return false;
 }
 
-void Board::make_move(std::string input, Piece::Colour colo)
+void Board::make_move(std::string input)
 {
-    // convert from 'algebraic' to row/col format
+    Piece::Colour colo {this->get_whose_turn()};
+    // convert user input to 0 indexed [row][column] format
     int source_row{this->rank_to_row(input[1])};
     int source_col{this->file_to_col(input[0])};
     int target_row{this->rank_to_row(input[4])};
@@ -368,7 +307,7 @@ void Board::make_move(std::string input, Piece::Colour colo)
     array[target_row][target_col]->increment_move_count();
 
     // add move to the move history
-    add_to_history(input, colo, was_capture);
+    add_to_history(input, was_capture);
 
     return;
 }
@@ -392,7 +331,7 @@ void Board::undo_move()
         colo = Piece::black;
         offset = 10;
     }
-    // get the move in 'algebraic' notation
+    // convert user input to 0 indexed [row][column] format
     int source_row{this->rank_to_row(move_history.back()[1+offset])};
     int source_col{this->file_to_col(move_history.back()[0+offset])};
     int target_row{this->rank_to_row(move_history.back()[4+offset])};
@@ -419,7 +358,7 @@ void Board::undo_move()
     }
     array[source_row][source_col]->decrement_move_count();
 
-    // remove the last move fromt the history
+    // remove the last move from the history
     if (colo == Piece::white){
         move_history.pop_back();
     } else {
@@ -429,8 +368,9 @@ void Board::undo_move()
     return;
 }
 
-void Board::add_to_history(std::string move, const Piece::Colour colo, int was_capture)
+void Board::add_to_history(std::string move, int was_capture)
 {
+    Piece::Colour colo {this->get_whose_turn()};
     // add the move to the history
     // use a colon [:] to indicate a capture
     if (was_capture){
@@ -473,7 +413,7 @@ void Board::load_game_from_file()
     // print the moves out
     std::string line{}, white_move{}, black_move{};
     std::cout << "  ========================" << std::endl;
-    std::cout << "     Moves from file " << std::endl;
+    std::cout << "     Moves from file:" << std::endl;
     std::cout << "  ========================" << std::endl;
     while(std::getline(ifs, line) && line[0] != ' ' ){
         
@@ -483,24 +423,30 @@ void Board::load_game_from_file()
         std::cout << "      " << white_move << "  |  " << black_move << std::endl;
 
         // make the moves
-        this->make_move(white_move, Piece::white);
-        this->set_whose_turn(Piece::black);
+        this->set_whose_turn(Piece::white);
+        this->make_move(white_move);
+        this->flip_turn();
         if (black_move[0] != ' '){
-            this->make_move(black_move, Piece::black);
-            this->set_whose_turn(Piece::white);
+            this->make_move(black_move);
+            this->flip_turn();
         }
     }
     std::cout << "  ========================" << std::endl;
+    
     return;
 }
 
-int Board::enumerate_moves(int depth, Piece::Colour colo)
+int Board::enumerate_moves(int depth)
 {
+    // count the number of half moves possible recursively
+    Piece::Colour colo{this->get_whose_turn()};
     int total_move_count{0};
     std::vector<std::vector<int>> move_list;
-    int depth_i{depth};
-    if (depth_i == 0) return 1;
 
+    if (depth == 0) return 1;
+    // loop through all pieces on board of the correct colour
+    // make each move 
+    // and call the function again
     for (int row{}; row<8; row++){
         for (int col{}; col<8; col++){
             if (array[row][col] != nullptr && array[row][col]->get_colour() == colo){
@@ -516,29 +462,27 @@ int Board::enumerate_moves(int depth, Piece::Colour colo)
                     move += col_to_file(move_list[i][1]);
                     move += row_to_rank(move_list[i][0]);
 
-                    Piece::Colour oppo_col{array[row][col]->get_opposite_colour()};
-
-                    this->make_move(move, colo);
-                    if (this->is_check(colo) == false){
-                        total_move_count += this->enumerate_moves(depth_i-1, oppo_col);
+                    this->make_move(move);
+                    if (this->is_check() == false){
+                        this->flip_turn();
+                        total_move_count += this->enumerate_moves(depth-1);
+                        this->undo_move();
+                        this->flip_turn();
+                    } else {
+                        this->flip_turn();
+                        this->undo_move();
+                        this->flip_turn();
                     }
-                    this->undo_move();
-                    /*
-                    if (depth_i==depth-1){
-                        std::cout << move << ":  " << total_move_count << std::endl;
-                    }
-                    */
                 }
             }
         }
     }
-
-    
     return total_move_count;
 }
 
-bool Board::is_check(Piece::Colour colo)
+bool Board::is_check()
 {
+    Piece::Colour colo {this->get_whose_turn()};
     int king_row{};
     int king_col{};
     // find the king
@@ -568,8 +512,9 @@ bool Board::is_check(Piece::Colour colo)
     return false;
 }
 
-bool Board::is_checkmate(Piece::Colour colo)
+bool Board::is_checkmate()
 {
+    Piece::Colour colo{this->get_whose_turn()};
     std::vector<std::vector<int>> move_list;
 
     for (int row{0}; row<8; row++){
@@ -577,7 +522,6 @@ bool Board::is_checkmate(Piece::Colour colo)
 
             if (array[row][col] != nullptr && array[row][col]->get_colour() == colo){
                 
-                //std::cout << "Checking piece at " << col_to_file(col) << row_to_rank(row) << std::endl;
                 move_list = array[row][col]->get_possible_moves(array, row, col);
 
                 for (int i{}; i<move_list.size(); i++){
@@ -588,10 +532,10 @@ bool Board::is_checkmate(Piece::Colour colo)
                     move += ' ';
                     move += col_to_file(move_list[i][1]);
                     move += row_to_rank(move_list[i][0]);
-                    //std::cout << move << std::endl;
-                    this->make_move(move, colo);
+
+                    this->make_move(move);
                     
-                    if (this->is_check(colo) == false){
+                    if (this->is_check() == false){
                         this->undo_move();
                         
                         return false;

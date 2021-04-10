@@ -4,13 +4,21 @@
 #include <fstream>
 #include <limits>
 #include <string>
+#include <chrono>
 
 void Menu::print_intro() const
 {
     std::cout << " \n \n"
-              << "WELCOME to Terminal Chess, a terminal based C++ \n"
+              << "WELCOME to Terminal Chess, a terminal-based C++ \n"
               << "chess game for two players \n" 
               << std::endl;
+
+    std::cout << "Please input moves in the format \n"
+              << "[file][rank][space][file][rank] \n"
+              << "e.g. to move from e2 to e4, type: \n"
+              << "\"e2 e4\" \n"
+              << std::endl;
+
     return;
 }
 
@@ -39,20 +47,65 @@ int Menu::main_menu(Board &board)
     }
     // undo the last move
     if (user_input == "u"){
-        board.flip_turn();
-        board.undo_move();
+        this->undo(board);
         return 1;   
     }
     // enumerate moves up to 4 ply
     if (user_input == "e"){
-        std::cout << "1 ply: " << board.enumerate_moves(1, board.get_whose_turn()) << std::endl;
-        std::cout << "2 ply: " << board.enumerate_moves(2, board.get_whose_turn()) << std::endl;
-        std::cout << "3 ply: " << board.enumerate_moves(3, board.get_whose_turn()) << std::endl;
-        std::cout << "4 ply: " << board.enumerate_moves(4, board.get_whose_turn()) << std::endl;
+        this->enumerate(board);
+        return 2;
     }
     // ask user for a filename and save the move history to it
     if (user_input == "s"){
-        std::cout << "Enter the filename to save the game to: " << std::endl;
+        this->save(board);
+        return 3;
+    }
+    // quit game
+    if (user_input == "q"){
+        this->quit();
+        return 4;
+    }
+    return 0;   
+}
+
+void Menu::undo(Board &board) const 
+{
+    board.flip_turn();
+    board.undo_move();
+    return;
+}
+
+void Menu::enumerate(Board &board) const
+{
+    using namespace std;
+    using namespace std::chrono;
+
+    // use namespace std::chrono for conciseness
+    // otherwise e.g. std::chrono::duration_cast<std::chrono::milliseconds> etc.
+    cout << "Enumerating moves \n"
+         << "This may take a few seconds..." << endl;
+    auto time1 = high_resolution_clock::now();
+    cout << "1 ply: " << board.enumerate_moves(1) << " nodes";
+    auto time2  = high_resolution_clock::now();
+    cout << " \t " << duration_cast<milliseconds>(time2-time1).count() << " ms" << endl;
+
+    cout << "2 ply: " << board.enumerate_moves(2) << " nodes";
+    auto time3  = high_resolution_clock::now();
+    cout << " \t " << duration_cast<milliseconds>(time3-time2).count() << " ms" << endl;
+
+    cout << "3 ply: " << board.enumerate_moves(3) << " nodes";
+    auto time4  = high_resolution_clock::now();
+    cout << " \t " << duration_cast<milliseconds>(time4-time3).count() << " ms" << endl;
+
+    cout << "4 ply: " << board.enumerate_moves(4) << " nodes";
+    auto time5  = high_resolution_clock::now();
+    cout << " \t " << duration_cast<milliseconds>(time5-time4).count() << " ms" << endl;
+    return;
+}
+
+void Menu::save(Board &board) const
+{
+    std::cout << "Enter the filename to save the game to: " << std::endl;
         std::string filename;
         std::cin >> filename;
         std::ofstream ofs{filename};
@@ -61,13 +114,12 @@ int Menu::main_menu(Board &board)
             std::cin >>filename;
             ofs.open(filename);
         }
-        board.save_history(filename);
-        return 3;
-    }
-    // quit game
-    if (user_input == "q"){
-        std::cout << "Quitting game. Goodbye :)" << std::endl;
-        return 4;
-    }
-    return 0;   
+    board.save_history(filename);
+    return;
+}
+
+void Menu::quit() const
+{
+    std::cout << "Quitting game. Goodbye :)" << std::endl;
+    return;
 }
