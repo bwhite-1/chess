@@ -199,7 +199,10 @@ std::vector<std::vector<int>> Pawn::get_possible_moves(std::unique_ptr<Piece> ar
 std::vector<std::vector<int>> Knight::get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) 
 {
     std::vector<std::vector<int>> move_list{};
-
+    // loop over all possible moves
+    // a legitimate move is one where the knight moves exactly 3 squares -
+    // two along one axis, one along the other
+    // so check that abs(i) + abs(j) is equal to 3
     for (int i{-2}; i<=2; i++){
         for (int j{-2}; j<=2; j++){
             if (abs(i)+abs(j) == 3){

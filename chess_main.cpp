@@ -16,6 +16,7 @@ int main()
     }
     catch (std::bad_alloc memFail) {
         std::cerr << "Memory allocation failure" << std::endl;
+        return 1;
     }
 
     std::cout << "Press [y] to load a game from a file, or any other key \n" 
@@ -57,6 +58,7 @@ int main()
         if (input == "menu"){
             if (menu.main_menu(game_board) == 4){
                 // user has quit game
+                // so break out of while loop
                 break;
             } 
             game_board.print_board();

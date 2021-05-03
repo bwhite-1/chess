@@ -19,6 +19,12 @@ void Menu::print_intro() const
               << "\"e2 e4\" \n"
               << std::endl;
 
+    std::cout << "Note that the following are disabled: \n"
+              << "     - En passant capture \n"
+              << "     - Castling \n"
+              << "     - Pawn promotion \n"
+              << std::endl;
+
     return;
 }
 

@@ -517,6 +517,9 @@ bool Board::is_checkmate()
     Piece::Colour colo{this->get_whose_turn()};
     std::vector<std::vector<int>> move_list;
 
+    // loop through all possible moves
+    // if after making every possible move, the king is still in check in all of them,
+    // return true
     for (int row{0}; row<8; row++){
         for (int col{0}; col<8; col++){
 

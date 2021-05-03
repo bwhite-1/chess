@@ -11,7 +11,7 @@ public:
     enum Colour {white, black};
 
     Piece(Colour colo){colour = colo;};
-    virtual std::vector<std::vector<int>> get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col){return {};};
+    virtual std::vector<std::vector<int>> get_possible_moves(std::unique_ptr<Piece> array[8][8], int row, int col) = 0;
     char get_symbol() const;
     Piece_type get_piece_type() const {return piece_type;};
     Colour get_colour() const {return colour;};
