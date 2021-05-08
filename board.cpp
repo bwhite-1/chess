@@ -312,13 +312,13 @@ void Board::make_move(std::string input)
     return;
 }
 
-void Board::undo_move()
+bool Board::undo_move()
 {
-
+    // returns true if successful, else false
     // if there are no moves in the move history, we cannot undo
     if (move_history.size() == 0){
         std::cout << "Cannot undo!" << std::endl;
-        return;
+        return false;
     }
     // get what colour the last move was 
     // offset allows us to look at second half of the line in the history
@@ -365,7 +365,7 @@ void Board::undo_move()
         for (int i{10}; i<=14; i++)
         move_history.back()[i] = ' ';
     }
-    return;
+    return true;
 }
 
 void Board::add_to_history(std::string move, int was_capture)
@@ -381,8 +381,11 @@ void Board::add_to_history(std::string move, int was_capture)
         move_history.push_back(move + "  |       ");
     } else {
     // if a black move, change the second half of the last line
-        for (int i{10}; i<=14; i++)
-        move_history.back()[i] = move[i-10];
+        if (!move_history.empty()){
+            for (int i{10}; i<=14; i++){
+                move_history.back()[i] = move[i-10];
+            }
+        }
     }
     return;
 }

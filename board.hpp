@@ -14,7 +14,7 @@ public:
     void print_board() const;
     bool is_move_valid(std::string input);
     void make_move(std::string input);
-    void undo_move();
+    bool undo_move();
 
     int rank_to_row(const char r) const;
     int file_to_col(const char f) const;

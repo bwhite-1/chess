@@ -76,8 +76,11 @@ int Menu::main_menu(Board &board)
 
 void Menu::undo(Board &board) const 
 {
-    board.flip_turn();
-    board.undo_move();
+    if (board.undo_move()){
+        board.flip_turn();
+    }
+    //board.flip_turn();
+    
     return;
 }
 
@@ -89,7 +92,7 @@ void Menu::enumerate(Board &board) const
     // use namespace std::chrono for conciseness
     // otherwise e.g. std::chrono::duration_cast<std::chrono::milliseconds> etc.
     cout << "Enumerating moves \n"
-         << "This may take a few seconds..." << endl;
+         << "This may take up to half a minute..." << endl;
     auto time1 = high_resolution_clock::now();
     cout << "1 ply: " << board.enumerate_moves(1) << " nodes";
     auto time2  = high_resolution_clock::now();
